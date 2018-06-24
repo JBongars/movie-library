@@ -18,3 +18,12 @@ Client
 
 
 Overall, that was a pretty hard weekend.
+
+
+
+INSTRUCTIONS TO LOAD
+======================
+1. Install npm components by running: `npm install`
+2. Install bower components by running: `bower install`
+3. Compile and run Spring Boot Application by running on Eclipse IDE or Intellij IDEA (Working to improve this step)
+1. Run Command `simple-server src/main/resources/static 5000` to start client web page
