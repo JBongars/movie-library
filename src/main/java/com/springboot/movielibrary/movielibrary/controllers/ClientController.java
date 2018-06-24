@@ -6,10 +6,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("app")
-public class ClientController {
+public class ClientController extends RootController {
 
-    @RequestMapping("/")
-    public String app(){
-        return "this is the client";
-    }
+    //Offset to a separate web service
+
+//    @RequestMapping("/welcome")
+//    public String welcome(){
+//
+//        return "this is the client";
+//    }
+//
+//    @RequestMapping("/list")
+//    public String app(){
+//        return "this is the client";
+//    }
 }

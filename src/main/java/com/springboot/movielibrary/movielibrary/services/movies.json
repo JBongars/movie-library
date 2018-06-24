@@ -1,5 +1,4 @@
-{
-  "collection": [
+[
     {
       "title": "Ocean's 8",
       "director": "Gary Ross",
@@ -54,5 +53,4 @@
       "releaseDate": "29/10/2014",
       "type": "Thriller"
     }
-  ]
-}
+]

@@ -1,39 +1,74 @@
 package com.springboot.movielibrary.movielibrary.controllers;
 
-import com.springboot.movielibrary.movielibrary.models.Movie;
-import com.springboot.movielibrary.movielibrary.services.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 
+import com.springboot.movielibrary.movielibrary.models.Movie;
+import com.springboot.movielibrary.movielibrary.models.MovieCollection;
+import com.springboot.movielibrary.movielibrary.services.MovieMapperService;
+
+import java.util.List;
+
+@ComponentScan
 @RestController
 @RequestMapping("api/movies")
-public class MovieController {
+public class MovieController extends RootController{
 
-    @Autowired
-    private MovieService movieService;
+//    Autowired
+//    private MovieMapperService movies;
+    private MovieMapperService movies = new MovieMapperService();
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
+//    public static void main(String[] args){
+//        try {
+//            this.movies = new MovieMapperService("movies.json");
+//        } catch(IOException e){
+//            e.printStackTrace();
+//        }
+//    }
+
+    @GetMapping(value = "/test")
     public String test(){
         return "Hello World";
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String listMovies(){
-        return "list of movies";
+    @GetMapping(value = "/list")
+    public @ResponseBody List<Movie> listMovies(){
+        List<Movie> response = movies.getCollection();
+        System.out.println(response.toString());
+        return response;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public @ResponseBody Movie show(@PathVariable int id) {
-        return new Movie("alice", "hp", "12","handsome");
+    @PostMapping(name="/")
+    public @ResponseBody List<Movie> createMovie(@RequestBody Movie req_item){
+        movies.add(req_item);
+        return movies.getCollection();
     }
 
+    @PutMapping(value = "/")
+    public String updateMovies(@RequestBody List<Movie> req_items){
+        movies.updateAll(req_items);
+        return "true";
+    }
 
+    @PostMapping(value = "/update")
+    public String updateMoviesFallback(@RequestBody List<Movie> req_items){
+        movies.updateAll(req_items);
+        return "true";
+    }
 
-//    @RequestMapping(value = "movies", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Object> listMovies() {
-//        return
+    @DeleteMapping(value = "/{id}")
+    public String deleteMovie(@PathVariable("id") long req_id){
+        boolean status = movies.deleteById(req_id);
+        if(status) return "true";
+        else return "false";
+    }
+
+//    @RequestMapping(value = "/", method = RequestMethod.POST)
+//    public void createMovies(@ResponseBody String payload) throws IOException {
+//        Movie post = new Movie(payload);
+//        movies.add(post);
 //    }
+
 }
 
 
