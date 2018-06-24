@@ -10,6 +10,8 @@ public class ClientController extends RootController {
 
     //Offset to a separate web service
 
+    //Not sure how to serve static pages using springboot...
+
 //    @RequestMapping("/welcome")
 //    public String welcome(){
 //
