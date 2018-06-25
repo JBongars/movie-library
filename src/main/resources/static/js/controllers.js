@@ -8,7 +8,7 @@ myApp.controller('MoviesController', ['$http', function($http){
     let vm = this; //vm
 
     // Set the Content-Type 
-    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+    // $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         
     // Delete the Requested With Header
     delete $http.defaults.headers.common['X-Requested-With'];
@@ -18,11 +18,15 @@ myApp.controller('MoviesController', ['$http', function($http){
 
     vm.types = ["Horror", "Romance", "Action", "Thriller", "Historical", "Family"];
     vm.fields = {};
-    vm.movies = [];
+    vm.index;
+    vm.filter = {};
+    vm.item = [];
 
     vm.listMovies = listMovies;
     vm.getImbdMovies = getImbdMovies;
-    vm.submiForm = submiForm;
+    vm.loadUpdate = loadUpdate;
+    vm.submitForm = submitForm;
+    vm.updateMovies = updateMovies;
     vm.changeState = changeState;
 
     function init(){
@@ -34,7 +38,16 @@ myApp.controller('MoviesController', ['$http', function($http){
         console.log('getting movies..');
         $http.get(api + '/list').then(results => {
             console.log('results are: ', results);
-            vm.movies = results.data;
+            vm.item = results.data;
+        })
+    }
+
+    function updateMovies(items){
+        items = angular.toJson(items);
+        console.log('updating...', items);
+        $http.post(api + '/update', {}, items).then(results => {
+            console.log('items are updated: ', results);
+            listMovies();
         })
     }
 
@@ -60,11 +73,23 @@ myApp.controller('MoviesController', ['$http', function($http){
         vm.fields = {};
     }
 
-    function submiForm(){
-        console.log("search form is: ", vm.search);
+    function loadUpdate(item, index){
+        changeState('update');
+        vm.fields = Object.assign({}, item);
+        vm.index = index;
+    }
+
+    function submitForm(){
+        console.log("fields form is: ", vm.fields);
 
         switch(vm.state){
             case 'search':
+                vm.filter = Object.assign({}, vm.fields);
+                break;
+            case 'update':
+                vm.item[vm.index] = Object.assign({}, vm.fields);
+                console.log('vm item is: ', vm.item);
+                updateMovies(vm.item);
                 break;
             case 'create':
                 break;
@@ -72,63 +97,5 @@ myApp.controller('MoviesController', ['$http', function($http){
         }
         changeState();
     }
-
-    // vm.movies = [
-    //     {
-    //       "title": "Ocean's 8",
-    //       "director": "Gary Ross",
-    //       "releaseDate": "13/06/2018",
-    //       "type": "action"
-    //     },
-    //     {
-    //       "title": "Solo: A Star Wars Story",
-    //       "director": "Ron Howard",
-    //       "releaseDate": "23/05/2018",
-    //       "type": "Sci-Fi"
-    //     },
-    //     {
-    //       "title": "Deadpool 2",
-    //       "director": "David Leitch",
-    //       "releaseDate": "16/05/2018",
-    //       "type": "Comedy"
-    //     },
-    //     {
-    //       "title": "Avengers: Infinite War",
-    //       "director": "Anthony Russo, Joe Russo",
-    //       "releaseDate": "25/04/2018",
-    //       "type": "action"
-    //     },
-    //     {
-    //       "title": "The First Purge",
-    //       "director": "Gerard McMurray",
-    //       "releaseDate": "04/07/2018",
-    //       "type": "Horror"
-    //     },
-    //     {
-    //       "title": "Mission: Impossible - Fallout",
-    //       "director": "Christopher McQuarrie",
-    //       "releaseDate": "01/08/2018",
-    //       "type": "Thriller"
-    //     },
-    //     {
-    //       "title": "The Mummy",
-    //       "director": "Christopher McQuarrie",
-    //       "releaseDate": "14/06/2017",
-    //       "type": "Fantasy"
-    //     },
-    //     {
-    //       "title": "Hunger Games",
-    //       "director": "Gary Ross",
-    //       "releaseDate": "21/03/2012",
-    //       "type": "Thriller"
-    //     },
-    //     {
-    //       "title": "John Wick",
-    //       "director": "David Leitch",
-    //       "releaseDate": "29/10/2014",
-    //       "type": "Thriller"
-    //     }
-    // ]
-
 
 }]);

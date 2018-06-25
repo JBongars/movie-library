@@ -1,9 +1,10 @@
 package com.springboot.movielibrary.movielibrary.models;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.ArrayList;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.io.IOException;
+import java.util.*;
 
 public class MovieCollection {
 
@@ -53,7 +54,9 @@ public class MovieCollection {
         return itemFound;
     }
 
-    public void updateAll(List<Movie> newMovies){
+    public void updateAll(String data) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Movie> newMovies = mapper.readValue(data, new TypeReference<Collection<Movie>>(){ });
         this.collection = newMovies;
     }
 

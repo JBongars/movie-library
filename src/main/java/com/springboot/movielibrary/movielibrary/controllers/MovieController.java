@@ -7,6 +7,7 @@ import com.springboot.movielibrary.movielibrary.models.Movie;
 import com.springboot.movielibrary.movielibrary.models.MovieCollection;
 import com.springboot.movielibrary.movielibrary.services.MovieMapperService;
 
+import java.io.IOException;
 import java.util.List;
 
 @ComponentScan
@@ -48,14 +49,14 @@ public class MovieController extends RootController{
 
     @CrossOrigin
     @PutMapping(value = "/")
-    public String updateMovies(@RequestBody List<Movie> req_items){
+    public String updateMovies(@RequestBody String req_items) throws IOException {
         movies.updateAll(req_items);
         return "true";
     }
 
     @CrossOrigin
     @PostMapping(value = "/update")
-    public String updateMoviesFallback(@RequestBody List<Movie> req_items){
+    public String updateMoviesFallback(@RequestBody String req_items) throws IOException {
         movies.updateAll(req_items);
         return "true";
     }
