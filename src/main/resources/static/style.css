@@ -7,6 +7,10 @@ body {
     background: linear-gradient(#d1a8ff, #7381ff); 
 }
 
+.body-background {
+    min-height: 100vh;
+}
+
 .welcome-jumbo {
     margin-top: 20vh;
 }
