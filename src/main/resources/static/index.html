@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-ng-app="myApp">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,17 @@
     <link href="bower_components/fontawesome/svg-with-js/css/fa-svg-with-js.min.css" rel="stylesheet" type="text/css" />
     <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
     <div ng-view></div>
+    <br>
+    <br>
+    <!-- Footer -->
+    <footer class="page-footer font-small mt-4">
+        <div class="footer-copyright text-center py-3">© 2018 Copyright:
+            <a href="javascript:void(0)"> Julien Bongars</a>
+        </div>
+    </footer>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
@@ -22,4 +32,5 @@
     <script src="js/controllers.js"></script>
     <script src="js/routes.js"></script>
 </body>
+
 </html>

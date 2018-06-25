@@ -27,3 +27,7 @@ body {
 .card-footer>button {
     display: inline-block;
 }
+
+.page-footer {
+    background: white;
+}
