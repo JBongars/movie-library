@@ -7,22 +7,35 @@ myApp.controller('MoviesController', ['$http', function($http){
 
     let vm = this; //vm
 
+    // Set the Content-Type 
+    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+        
+    // Delete the Requested With Header
+    delete $http.defaults.headers.common['X-Requested-With'];
+
     const imbd = "http://omdbapi.com/";
-    const api = "localhost:8080/api/movies";
+    const api = "http://localhost:8080/api/movies";
 
     vm.types = ["Horror", "Romance", "Action", "Thriller", "Historical", "Family"];
     vm.fields = {};
+    vm.movies = [];
 
-    vm.getMovies = getMovies;
+    vm.listMovies = listMovies;
     vm.getImbdMovies = getImbdMovies;
     vm.submiForm = submiForm;
     vm.changeState = changeState;
+
+    function init(){
+        listMovies();
+    }
+    init();
     
-
-
-
-    function getMovies(){
+    function listMovies(){
         console.log('getting movies..');
+        $http.get(api + '/list').then(results => {
+            console.log('results are: ', results);
+            vm.movies = results.data;
+        })
     }
 
     let imbdTimer;
@@ -60,62 +73,62 @@ myApp.controller('MoviesController', ['$http', function($http){
         changeState();
     }
 
-    vm.movies = [
-        {
-          "title": "Ocean's 8",
-          "director": "Gary Ross",
-          "releaseDate": "13/06/2018",
-          "type": "action"
-        },
-        {
-          "title": "Solo: A Star Wars Story",
-          "director": "Ron Howard",
-          "releaseDate": "23/05/2018",
-          "type": "Sci-Fi"
-        },
-        {
-          "title": "Deadpool 2",
-          "director": "David Leitch",
-          "releaseDate": "16/05/2018",
-          "type": "Comedy"
-        },
-        {
-          "title": "Avengers: Infinite War",
-          "director": "Anthony Russo, Joe Russo",
-          "releaseDate": "25/04/2018",
-          "type": "action"
-        },
-        {
-          "title": "The First Purge",
-          "director": "Gerard McMurray",
-          "releaseDate": "04/07/2018",
-          "type": "Horror"
-        },
-        {
-          "title": "Mission: Impossible - Fallout",
-          "director": "Christopher McQuarrie",
-          "releaseDate": "01/08/2018",
-          "type": "Thriller"
-        },
-        {
-          "title": "The Mummy",
-          "director": "Christopher McQuarrie",
-          "releaseDate": "14/06/2017",
-          "type": "Fantasy"
-        },
-        {
-          "title": "Hunger Games",
-          "director": "Gary Ross",
-          "releaseDate": "21/03/2012",
-          "type": "Thriller"
-        },
-        {
-          "title": "John Wick",
-          "director": "David Leitch",
-          "releaseDate": "29/10/2014",
-          "type": "Thriller"
-        }
-    ]
+    // vm.movies = [
+    //     {
+    //       "title": "Ocean's 8",
+    //       "director": "Gary Ross",
+    //       "releaseDate": "13/06/2018",
+    //       "type": "action"
+    //     },
+    //     {
+    //       "title": "Solo: A Star Wars Story",
+    //       "director": "Ron Howard",
+    //       "releaseDate": "23/05/2018",
+    //       "type": "Sci-Fi"
+    //     },
+    //     {
+    //       "title": "Deadpool 2",
+    //       "director": "David Leitch",
+    //       "releaseDate": "16/05/2018",
+    //       "type": "Comedy"
+    //     },
+    //     {
+    //       "title": "Avengers: Infinite War",
+    //       "director": "Anthony Russo, Joe Russo",
+    //       "releaseDate": "25/04/2018",
+    //       "type": "action"
+    //     },
+    //     {
+    //       "title": "The First Purge",
+    //       "director": "Gerard McMurray",
+    //       "releaseDate": "04/07/2018",
+    //       "type": "Horror"
+    //     },
+    //     {
+    //       "title": "Mission: Impossible - Fallout",
+    //       "director": "Christopher McQuarrie",
+    //       "releaseDate": "01/08/2018",
+    //       "type": "Thriller"
+    //     },
+    //     {
+    //       "title": "The Mummy",
+    //       "director": "Christopher McQuarrie",
+    //       "releaseDate": "14/06/2017",
+    //       "type": "Fantasy"
+    //     },
+    //     {
+    //       "title": "Hunger Games",
+    //       "director": "Gary Ross",
+    //       "releaseDate": "21/03/2012",
+    //       "type": "Thriller"
+    //     },
+    //     {
+    //       "title": "John Wick",
+    //       "director": "David Leitch",
+    //       "releaseDate": "29/10/2014",
+    //       "type": "Thriller"
+    //     }
+    // ]
 
 
 }]);
