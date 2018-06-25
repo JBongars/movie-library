@@ -19,7 +19,7 @@
             <a href="javascript:void(0)" ng-click="vm.changeState('search');" data-toggle="modal" data-target="#itemModal">Advanced Search</a>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ui-sortable="vm.imageSortableOptions" ng-model="vm.item">
         <div class="col-sm-3 card-wrapper" ng-repeat="movie in vm.item | filter:vm.filter.title">
             <div class="card">
                 <div class="card-header">

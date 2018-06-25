@@ -14,7 +14,14 @@ myApp.controller('MoviesController', ['$http', function($http){
     delete $http.defaults.headers.common['X-Requested-With'];
 
     const imbd = "http://omdbapi.com/";
-    const api = "http://localhost:8080/api/movies";
+    const api = "http://localhost:8080/api/movies/";
+
+    vm.imageSortableOptions = {
+        'ui-floating': true,
+        'update': function (event, ui) {
+            callApi(vm.item, 'update');
+        }
+    }
 
     vm.types = ["Horror", "Romance", "Action", "Thriller", "Historical", "Family"];
     vm.fields = {};
@@ -36,7 +43,7 @@ myApp.controller('MoviesController', ['$http', function($http){
     
     function listMovies(){
         console.log('getting movies..');
-        $http.get(api + '/list').then(results => {
+        $http.get(api + 'list').then(results => {
             console.log('results are: ', results);
             vm.item = results.data;
         })
@@ -47,12 +54,14 @@ myApp.controller('MoviesController', ['$http', function($http){
         switch(state){
             case "delete":
             case "update": 
-                call = { url: api + '/update', method: "PUT", data: angular.toJson(items) };
+                call = { url: api + 'update', method: "PUT", data: angular.toJson(items) };
                 break;
             case "create": 
                 call = { url: api, method: "POST", data: angular.toJson(items) };
                 break;
         }
+
+        console.log('making call: ', call.data);
 
         if(call){
             console.log('updating...', items);
