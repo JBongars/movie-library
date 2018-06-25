@@ -7,9 +7,6 @@
     </div>
     <br>
     <div class="row">
-        <pre>{{vm.fields|json}}</pre>
-    </div>
-    <div class="row">
         <div class="col-sm-12">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" ng-model="vm.filter.title" ng-model-options="{debounce:500}" placeholder="Search..">
@@ -64,7 +61,7 @@
                     <br>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-primary">Add
+                    <button class="btn btn-primary" ng-click="vm.changeState('create')" data-toggle="modal" data-target="#itemModal">Add
                         <span class="far fa-edit"></span>
                     </button>
                 </div>

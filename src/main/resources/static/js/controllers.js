@@ -26,7 +26,6 @@ myApp.controller('MoviesController', ['$http', function($http){
     vm.getImbdMovies = getImbdMovies;
     vm.loadUpdate = loadUpdate;
     vm.submitForm = submitForm;
-    vm.updateMovies = updateMovies;
     vm.changeState = changeState;
 
     function init(){
@@ -42,10 +41,15 @@ myApp.controller('MoviesController', ['$http', function($http){
         })
     }
 
-    function updateMovies(items){
-        items = angular.toJson(items);
+    function callApi(items, state){
+        let call;
+        switch(state){
+            case "update": call = { url: api + '/update', method: "PUT", data: angular.toJson(items) };
+            case "create": call = { url: api, method: "POST", data: angular.toJson(items) };
+        }
+
         console.log('updating...', items);
-        $http.post(api + '/update', {}, items).then(results => {
+        $http(call).then(results => {
             console.log('items are updated: ', results);
             listMovies();
         })
@@ -89,9 +93,11 @@ myApp.controller('MoviesController', ['$http', function($http){
             case 'update':
                 vm.item[vm.index] = Object.assign({}, vm.fields);
                 console.log('vm item is: ', vm.item);
-                updateMovies(vm.item);
+                callApi(vm.item, 'update');
                 break;
             case 'create':
+                vm.item.push(Object.assign({}, vm.fields));
+                callApi(Object.assign({}, vm.fields), 'create');
                 break;
             default:
         }
