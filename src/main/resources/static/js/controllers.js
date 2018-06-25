@@ -8,7 +8,7 @@ myApp.controller('MoviesController', ['$http', function($http){
     let vm = this; //vm
 
     // Set the Content-Type 
-    // $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         
     // Delete the Requested With Header
     delete $http.defaults.headers.common['X-Requested-With'];
@@ -25,6 +25,7 @@ myApp.controller('MoviesController', ['$http', function($http){
     vm.listMovies = listMovies;
     vm.getImbdMovies = getImbdMovies;
     vm.loadUpdate = loadUpdate;
+    vm.deleteItem = deleteItem;
     vm.submitForm = submitForm;
     vm.changeState = changeState;
 
@@ -44,15 +45,24 @@ myApp.controller('MoviesController', ['$http', function($http){
     function callApi(items, state){
         let call;
         switch(state){
-            case "update": call = { url: api + '/update', method: "PUT", data: angular.toJson(items) };
-            case "create": call = { url: api, method: "POST", data: angular.toJson(items) };
+            case "delete":
+            case "update": 
+                call = { url: api + '/update', method: "PUT", data: angular.toJson(items) };
+                break;
+            case "create": 
+                call = { url: api, method: "POST", data: angular.toJson(items) };
+                break;
         }
 
-        console.log('updating...', items);
-        $http(call).then(results => {
-            console.log('items are updated: ', results);
-            listMovies();
-        })
+        if(call){
+            console.log('updating...', items);
+            $http(call).then(results => {
+                console.log('items are updated: ', results);
+                listMovies();
+            })
+        } else {
+            console.log('no item selected!');
+        }
     }
 
     let imbdTimer;
@@ -81,6 +91,11 @@ myApp.controller('MoviesController', ['$http', function($http){
         changeState('update');
         vm.fields = Object.assign({}, item);
         vm.index = index;
+    }
+
+    function deleteItem(index){
+        vm.item.splice(index, 1);
+        callApi(vm.item, 'delete');
     }
 
     function submitForm(){

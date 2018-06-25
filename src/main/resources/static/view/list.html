@@ -39,7 +39,7 @@
                     <button ng-click="vm.loadUpdate(movie, $index)" data-toggle="modal" data-target="#itemModal" class="btn btn-primary">Edit
                         <span class="far fa-edit"></span>
                     </button>
-                    <button class="btn btn-danger">Delete
+                    <button class="btn btn-danger" ng-click="vm.deleteItem($index)">Delete
                         <span class="fas fa-trash"></span>
                     </button>
                 </div>
