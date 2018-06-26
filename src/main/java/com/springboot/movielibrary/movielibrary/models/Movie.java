@@ -1,20 +1,16 @@
 package com.springboot.movielibrary.movielibrary.models;
 
-import javax.persistence.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.GeneratedValue;
 import java.io.IOException;
 
 //@Entity
 public class Movie {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+//    @GeneratedValue(generator = "uuid2")
+//    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private long id;
     private String title;
     private String director;
