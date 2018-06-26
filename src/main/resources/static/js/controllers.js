@@ -2,7 +2,7 @@ myApp.controller('WelcomeController', [ function(){
     console.log("Welcome Controller started!");
 }]);
 
-myApp.controller('MoviesController', ['$http', function($http){
+myApp.controller('MoviesController', ['$scope', '$http', 'toastr', function($scope, $http, toastr){
     console.log("Movies controller started!");
 
     let vm = this; //vm
@@ -16,13 +16,6 @@ myApp.controller('MoviesController', ['$http', function($http){
     const imbd = "http://omdbapi.com/";
     const api = "http://localhost:8080/api/movies/";
 
-    vm.imageSortableOptions = {
-        'ui-floating': true,
-        'update': function (event, ui) {
-            callApi(vm.item, 'update');
-        }
-    }
-
     vm.types = ["Horror", "Romance", "Action", "Thriller", "Historical", "Family"];
     vm.fields = {};
     vm.index;
@@ -32,7 +25,9 @@ myApp.controller('MoviesController', ['$http', function($http){
     vm.listMovies = listMovies;
     vm.getImbdMovies = getImbdMovies;
     vm.loadUpdate = loadUpdate;
+    vm.updateAll = updateAll;
     vm.deleteItem = deleteItem;
+    vm.addRecommendedMovie = addRecommendedMovie;
     vm.submitForm = submitForm;
     vm.changeState = changeState;
 
@@ -40,6 +35,19 @@ myApp.controller('MoviesController', ['$http', function($http){
         listMovies();
     }
     init();
+
+
+    vm.imageSortableOptions = {
+        'ui-floating': true,
+        'update': function (event, ui) {
+            // console.log('item is: ', vm.item);
+            // console.log('ui is: ', ui);
+            // console.log('event is: ', event);
+            // $scope.$apply();
+            // callApi(vm.item, 'update');
+            //callApi(vm.item, 'update');
+        }
+    }
     
     function listMovies(){
         vm.filter = {};
@@ -51,14 +59,15 @@ myApp.controller('MoviesController', ['$http', function($http){
     }
 
     function callApi(items, state){
-        let call;
+        let obj = angular.toJson(items);
+
         switch(state){
             case "delete":
             case "update": 
-                call = { url: api + 'update', method: "POST", data: angular.toJson(items) };
+                call = { url: api, method: "PUT", data: obj };
                 break;
             case "create": 
-                call = { url: api, method: "POST", data: angular.toJson(items) };
+                call = { url: api, method: "POST", data: obj };
                 break;
         }
 
@@ -68,23 +77,28 @@ myApp.controller('MoviesController', ['$http', function($http){
             console.log('updating...', items);
             $http(call).then(results => {
                 console.log('items are updated: ', results);
+                toastr.success("Items were " + state + "d Successfully!", "Success");
                 listMovies();
             })
         } else {
             console.log('no item selected!');
+            toastr.success("Items were not " + state + "ed...", "Oops!");
         }
     }
 
     let imbdTimer;
     function getImbdMovies(){
         clearTimeout(imbdTimer);
+        vm.showImbd = false;
         imbdTimer = setTimeout(() => {
             $http.get(imbd, {
                 params: {
                     apikey: "1e6cb687",
-                    t: vm.fields.title
+                    t: vm.fields.title,
+                    plot: "full"
                 }
             }).then(results => {
+                vm.showImbd = true
                 console.log('results are: ', results);
                 vm.imbdMovies = results.data;
                 
@@ -106,6 +120,25 @@ myApp.controller('MoviesController', ['$http', function($http){
     function deleteItem(index){
         vm.item.splice(index, 1);
         callApi(vm.item, 'delete');
+    }
+
+    function addRecommendedMovie(item){
+        console.log('item is: ', item);
+        let obj = {
+            title: item.Title,
+            director: item.Director.split(',')[0],
+            releaseDate: item.Released,
+            type: item.Genre.split(',')[0]
+        }
+
+        console.log('obj is: ', obj);
+
+        vm.item.push(obj);
+        callApi(obj, 'create');
+    }
+
+    function updateAll(){
+        callApi(vm.item, 'update');
     }
 
     function submitForm(){

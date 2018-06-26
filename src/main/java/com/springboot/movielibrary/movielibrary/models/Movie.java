@@ -73,6 +73,13 @@ public class Movie {
 
     @Override
     public String toString(){
-        return getTitle() + ", " + getDirector() + ", " + getReleaseDate() + ", " + getType();
+        return  "\n=========================================================" +
+                "\nMovie Class" +
+                "\n=========================================================" +
+                "\nTitle = " + getTitle() +
+                "\nDirector = " + getDirector() +
+                "\nReleaseDate = " + getReleaseDate() +
+                "\nType = " + getType() +
+                "\n\n=========================================================\n\n";
     }
 }

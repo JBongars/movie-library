@@ -35,3 +35,7 @@ body {
 .page-footer {
     background: white;
 }
+
+.pull-right{
+    float: right;
+}

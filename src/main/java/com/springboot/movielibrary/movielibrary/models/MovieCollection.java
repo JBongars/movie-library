@@ -57,6 +57,7 @@ public class MovieCollection {
     public void updateAll(String data) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         List<Movie> newMovies = mapper.readValue(data, new TypeReference<Collection<Movie>>(){ });
+        System.out.println(newMovies);
         this.collection = newMovies;
     }
 
