@@ -32,7 +32,6 @@ public class MovieController extends RootController{
         return "Hello World";
     }
 
-    @CrossOrigin
     @GetMapping(value = "/list")
     public @ResponseBody List<Movie> listMovies(){
         List<Movie> response = movies.getCollection();
@@ -40,28 +39,25 @@ public class MovieController extends RootController{
         return response;
     }
 
-    @CrossOrigin
     @PostMapping(name="/")
     public @ResponseBody List<Movie> createMovie(@RequestBody Movie req_item){
         movies.add(req_item);
         return movies.getCollection();
     }
 
-    @CrossOrigin
     @PutMapping(value = "/")
     public String updateMovies(@RequestBody String req_items) throws IOException {
         movies.updateAll(req_items);
         return "true";
     }
 
-    @CrossOrigin
+
     @PostMapping(value = "/update")
     public String updateMoviesFallback(@RequestBody String req_items) throws IOException {
         movies.updateAll(req_items);
         return "true";
     }
 
-    @CrossOrigin
     @DeleteMapping(value = "/{id}")
     public String deleteMovie(@PathVariable("id") long req_id){
         boolean status = movies.deleteById(req_id);

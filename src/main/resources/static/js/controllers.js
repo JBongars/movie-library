@@ -8,7 +8,7 @@ myApp.controller('MoviesController', ['$http', function($http){
     let vm = this; //vm
 
     // Set the Content-Type 
-    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+    //$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         
     // Delete the Requested With Header
     delete $http.defaults.headers.common['X-Requested-With'];
@@ -42,6 +42,7 @@ myApp.controller('MoviesController', ['$http', function($http){
     init();
     
     function listMovies(){
+        vm.filter = {};
         console.log('getting movies..');
         $http.get(api + 'list').then(results => {
             console.log('results are: ', results);
@@ -54,7 +55,7 @@ myApp.controller('MoviesController', ['$http', function($http){
         switch(state){
             case "delete":
             case "update": 
-                call = { url: api + 'update', method: "PUT", data: angular.toJson(items) };
+                call = { url: api + 'update', method: "POST", data: angular.toJson(items) };
                 break;
             case "create": 
                 call = { url: api, method: "POST", data: angular.toJson(items) };
