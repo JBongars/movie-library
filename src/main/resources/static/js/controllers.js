@@ -13,14 +13,16 @@ myApp.controller('MoviesController', ['$scope', '$http', 'toastr', function($sco
     // Delete the Requested With Header
     delete $http.defaults.headers.common['X-Requested-With'];
 
-    const imbd = "http://omdbapi.com/";
-    const api = "http://localhost:8080/api/movies/";
+    const imbd = "https://omdbapi.com/";
+    const api = "https://whispering-waters-61190.herokuapp.com/api/movies/";
 
     vm.types = ["Horror", "Romance", "Action", "Thriller", "Historical", "Family"];
     vm.fields = {};
     vm.index;
     vm.filter = {};
     vm.item = [];
+
+    vm.loading = true;
 
     vm.listMovies = listMovies;
     vm.getImbdMovies = getImbdMovies;
@@ -53,6 +55,7 @@ myApp.controller('MoviesController', ['$scope', '$http', 'toastr', function($sco
         vm.filter = {};
         console.log('getting movies..');
         $http.get(api + 'list').then(results => {
+            vm.loading = false;
             console.log('results are: ', results);
             vm.item = results.data;
         })
